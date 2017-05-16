@@ -38,16 +38,18 @@ public class Deikstra {
 			
 	
 		//Sukuriame virsunes su ju koordinatemis
-		Virsune A = new Virsune('A', Arrays.asList(2,2)); 
-		Virsune B = new Virsune('B', Arrays.asList(0,2));
-		Virsune C = new Virsune('C', Arrays.asList(2,5));
-		Virsune D = new Virsune('D', Arrays.asList(0,6));
+		Virsune A = new Virsune('A', Arrays.asList(0,6)); 
+		Virsune B = new Virsune('B', Arrays.asList(3,6));
+		Virsune C = new Virsune('C', Arrays.asList(1,4));
+		Virsune D = new Virsune('D', Arrays.asList(7,9));
+		Virsune E = new Virsune('E', Arrays.asList(7,4));
 		
 		//Sukuriame briaunas
-		g.pridetiBriauna('A', Arrays.asList(B,C));
+		g.pridetiBriauna('A', Arrays.asList(C,B));
 		g.pridetiBriauna('B', Arrays.asList(A,D));
-		g.pridetiBriauna('C', Arrays.asList(A));
-		g.pridetiBriauna('D', Arrays.asList(B));
+		g.pridetiBriauna('C', Arrays.asList(A,E));
+		g.pridetiBriauna('D', Arrays.asList(E,B));
+		g.pridetiBriauna('E', Arrays.asList(C,D));
    		
 		Deikstra d = new Deikstra(g);
 		
@@ -59,7 +61,7 @@ public class Deikstra {
 		char pabaiga = sc.next().charAt(0);
 	    
 		time = System.currentTimeMillis();
-	    System.out.println("Kelias " + d.gautiTrumpiausiaKelia2(pradzia, pabaiga) + " atstumas " + d.atstumasXY);
+	    System.out.println("Kelias " + d.gautiTrumpiausiaKelia(pradzia, pabaiga) + " atstumas " + d.atstumasXY);
 	    
 	    System.out.println("Vykdymo laikas " + (System.currentTimeMillis() - time) + " ms");
 	    
@@ -75,9 +77,9 @@ public class Deikstra {
 		gautiVirs(pabaiga);
     	PriorityQueue<Virsune> eile = new PriorityQueue<Virsune>();
         final Map<Character, Double> atstumai = new HashMap<Character, Double>();
-        //aprašo trumpiausio keliu medi, ji reikia isvyniuoti nuo galo
+        //aprašo trumpiausia kelia, ji reikia isvyniuoti nuo galo
         final Map<Character, Virsune> trumpKelias = new HashMap<Character, Virsune>();
-        //
+        final List<Character> aplankytos = new ArrayList<Character>();
 
         //i eile patalpiname virsune ir priskiriame pradinei virsune 0
         //likusiom virsunem begalybe (musu atveju Double.MAX_VALUE
@@ -97,8 +99,7 @@ public class Deikstra {
         while (!eile.isEmpty()) {
             Virsune v = eile.poll(); //is eile paimame virsune su maziausiu atstumu
             System.out.println("Is eiles paimta virsune: " + v.toString());
-            
-            //jei atejome iki reikiamos virsunes baigiame darba ir graziname kelia
+           
             if (v.getVirsunePavadinimas() == pabaiga) {
                 final List<Character> kelias = new ArrayList<Character>();
                 setAtstumasXY(atstumai.get(v.getVirsunePavadinimas()));
@@ -111,6 +112,7 @@ public class Deikstra {
                 return kelias;
             }
             
+            
             //pabaigiame darba, tai reiskia, kad pries tai buvusios virsunes neturejo kaimyniu
             if (atstumai.get(v.getVirsunePavadinimas()) == Double.MAX_VALUE) {
                 break;
@@ -119,28 +121,39 @@ public class Deikstra {
             //einame per visas virsunes kaimynes ir skaiciuojame trumpiausia atstuma
             //jei randame atnaujiname eile ismeta su senu atstumu virsune ir idedame su nauju
             for (Virsune kaimyne : grafas.getVirsunes().get(v.getVirsunePavadinimas())) {
-            	double atstumasIkiKaimyno = v.paskaiciuotiAtstuma(kaimyne);
-                double naujasAtstumas = atstumai.get(v.getVirsunePavadinimas()) + atstumasIkiKaimyno;
-                System.out.println("Kaimyne: " + kaimyne.getVirsunePavadinimas() + " atstumas " + atstumasIkiKaimyno);
-                
-                if (naujasAtstumas < atstumai.get(kaimyne.getVirsunePavadinimas())) {
-                    atstumai.put(kaimyne.getVirsunePavadinimas(), naujasAtstumas);
-                    trumpKelias.put(kaimyne.getVirsunePavadinimas(), v);
-                    //eileje ieskome kaimynes ir atnaujiname atstuma
-                    forloop:
-                    for(Virsune vv : eile) {
-                        if (vv.getVirsunePavadinimas() == kaimyne.getVirsunePavadinimas()) {
-                            eile.remove(vv);
-                            kaimyne.setAtstumas(naujasAtstumas);
-                            eile.add(kaimyne);
-                            break forloop;
+            	if(!arAplankyta(kaimyne.getVirsunePavadinimas(), aplankytos)){
+            		double atstumasIkiKaimyno = v.paskaiciuotiAtstuma(kaimyne);
+                    double naujasAtstumas = atstumai.get(v.getVirsunePavadinimas()) + atstumasIkiKaimyno;
+                    System.out.println("Kaimyne: " + kaimyne.getVirsunePavadinimas() + " atstumas " + atstumasIkiKaimyno);
+                    
+                    if (naujasAtstumas < atstumai.get(kaimyne.getVirsunePavadinimas())) {
+                        atstumai.put(kaimyne.getVirsunePavadinimas(), naujasAtstumas);
+                        trumpKelias.put(kaimyne.getVirsunePavadinimas(), v);
+                        //eileje ieskome kaimynes ir atnaujiname atstuma
+                        forloop:
+                        for(Virsune vv : eile) {
+                            if (vv.getVirsunePavadinimas() == kaimyne.getVirsunePavadinimas()) {
+                                eile.remove(vv);
+                                kaimyne.setAtstumas(naujasAtstumas);
+                                eile.add(kaimyne);
+                                break forloop;
+                            }
                         }
                     }
-                }
+            	}
             }
         }
         throw new Exception("Neimano pasiekti virsunes" + pabaiga); 
     }
+	
+	public boolean arAplankyta(Character virsunePav, List<Character> aplankytos){
+		for(Character c: aplankytos){
+			if(virsunePav.equals(c.charValue())){
+				return true;
+			}
+		}
+		return false;
+	}
 	
 	public Virsune gautiVirs(Character virsune) throws Exception{
 		boolean virsuneNeturiKaimyniu = true;
@@ -169,6 +182,7 @@ public class Deikstra {
         final Map<Character, Double> atstumai = new HashMap<Character, Double>();
         //aprašo trumpiausio kelia, ji reikia isvyniuoti nuo galo
         final Map<Character, Virsune> trumpKelias = new HashMap<Character, Virsune>();
+        final List<Character> aplankytos = new ArrayList<Character>();
         
         //i eile patalpiname virsune ir priskiriame pradinei virsune 0
         //likusiom virsunem begalybe (musu atveju Double.MAX_VALUE)
@@ -186,7 +200,9 @@ public class Deikstra {
         System.out.println("Is viso eileje virsuniu " + eile.size());
         //nagrinejame virsune kol eile nebus tuscia
         while (!eile.isEmpty()) {
+        	
             Virsune v = eile.poll(); //is eile paimame virsune su maziausiu numatomu atstumu
+            aplankytos.add(v.getVirsunePavadinimas());
             System.out.println("Is eiles paimta virsune: " + v.toString());
             
             //jei atejome iki reikiamos virsunes baigiame darba ir graziname kelia
@@ -210,34 +226,45 @@ public class Deikstra {
             //einame per visas virsunes kaimynes ir skaiciuojame trumpiausia atstuma
             //jei randame atnaujiname eile ismeta su senu atstumu virsune ir idedame su nauju
             for (Virsune kaimyne : grafas.getVirsunes().get(v.getVirsunePavadinimas())) {
-            	double numanomasAtstumas = kaimyne.paskaiciuotiAtstuma(pabVirs); //atsumas kaimynes iki pabaigos virsunes, imamas tiesus atstumas
-            	double atstumasIkiKaimyno = v.paskaiciuotiAtstuma(kaimyne);
-                double naujasAtstumas = atstumai.get(v.getVirsunePavadinimas()) + atstumasIkiKaimyno + numanomasAtstumas;
-                System.out.println("Kaimyne: " + kaimyne.getVirsunePavadinimas() + " f " + naujasAtstumas);
-                
-                if (naujasAtstumas < atstumai.get(kaimyne.getVirsunePavadinimas())) {
-                    atstumai.put(kaimyne.getVirsunePavadinimas(), naujasAtstumas);
-                    trumpKelias.put(kaimyne.getVirsunePavadinimas(), v);
-                    //eileje ieskome kaimynes ir atnaujiname atstuma
-                    forloop:
-                    for(Virsune vv : eile) {
-                        if (vv.getVirsunePavadinimas() == kaimyne.getVirsunePavadinimas()) {
-                            eile.remove(vv);
-                            System.out.println("Naujas atstumas" + naujasAtstumas);
-                            kaimyne.setAtstumas(naujasAtstumas);
-                            eile.add(kaimyne);
-                            break forloop;
+            	 	//jei atejome iki reikiamos virsunes baigiame darba ir graziname kelia
+                    if (kaimyne.getVirsunePavadinimas() == pabaiga) {
+                        final List<Character> kelias = new ArrayList<Character>();
+                        setAtstumasXY(atstumai.get(v.getVirsunePavadinimas()));
+                        while (trumpKelias.get(v.getVirsunePavadinimas()) != null) {
+                            kelias.add(v.getVirsunePavadinimas());
+                            v = trumpKelias.get(v.getVirsunePavadinimas());
+                        }
+                        kelias.add(v.getVirsunePavadinimas());
+                        Collections.reverse(kelias);
+                        return kelias;
+                    }
+                    if(!arAplankyta(kaimyne.getVirsunePavadinimas(), aplankytos)){
+                    	double numanomasAtstumas = kaimyne.paskaiciuotiAtstuma(pabVirs); //atsumas kaimynes iki pabaigos virsunes, imamas tiesus atstumas
+                    	double atstumasIkiKaimyno = v.paskaiciuotiAtstuma(kaimyne);
+                        double naujasAtstumas = atstumai.get(v.getVirsunePavadinimas()) + atstumasIkiKaimyno + numanomasAtstumas;
+                        System.out.println("Kaimyne: " + kaimyne.getVirsunePavadinimas() + " f " + naujasAtstumas);
+                        
+                        if (naujasAtstumas < atstumai.get(kaimyne.getVirsunePavadinimas())) {
+                            atstumai.put(kaimyne.getVirsunePavadinimas(), naujasAtstumas);
+                            trumpKelias.put(kaimyne.getVirsunePavadinimas(), v);
+                            //eileje ieskome kaimynes ir atnaujiname atstuma
+                            forloop:
+                            for(Virsune vv : eile) {
+                                if (vv.getVirsunePavadinimas() == kaimyne.getVirsunePavadinimas()) {
+                                    eile.remove(vv);
+                                    System.out.println("Naujas atstumas" + naujasAtstumas);
+                                    kaimyne.setAtstumas(naujasAtstumas);
+                                    eile.add(kaimyne);
+                                    break forloop;
+                                }
+                            }
                         }
                     }
-                }
             }
         }
         throw new Exception("Neiimano pasiekti virsunes" + pabaiga); 
     }
 	
-	
-	
-
 	public double getAtstumasXY() {
 		return atstumasXY;
 	}
