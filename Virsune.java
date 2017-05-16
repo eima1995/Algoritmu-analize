@@ -1,12 +1,22 @@
-
+import java.util.*;
 public class Virsune implements Comparable<Virsune>{
 	
 	private Character virsunesPavadinimas;
-    private Integer atstumas;
+	private List<Integer> cord = new ArrayList<Integer>();
+    private double atstumas; 
     
-    Virsune(Character virsunesPavadinimas, Integer atstumas){
-    	this.atstumas = atstumas;
+	Virsune(){
+    	
+    }
+    
+    Virsune(Character virsunesPavadinimas, List<Integer> cord){
+    	this.setCord(cord);
     	this.virsunesPavadinimas = virsunesPavadinimas;
+    }
+    
+    Virsune(Character virsunesPavadinimas, double atstumas){
+    	this.virsunesPavadinimas = virsunesPavadinimas;
+    	this.atstumas = atstumas;
     }
     
 	public Character getVirsunePavadinimas() {
@@ -14,19 +24,19 @@ public class Virsune implements Comparable<Virsune>{
 	}
 	
 	public void setVirsunePavadinimas(Character virsunePavadinimas) {
-		this.virsunesPavadinimas = virsunesPavadinimas;
+		this.virsunesPavadinimas = virsunePavadinimas;
 	}
 	
-	public Integer getAtstumas() {
+	public Double getAtstumas() {
 		return atstumas;
 	}
 	
-	public void setAtstumas(Integer atstumas) {
+	public void setAtstumas(Double atstumas) {
 		this.atstumas = atstumas;
 	}
 	
 	public String toString() {
-        return "Virsune [id =" + virsunesPavadinimas + ", atstumas=" + atstumas + "]";
+        return "Virsune [id =" + virsunesPavadinimas + ", dist=" + atstumas + "]";
     }
 	
 	@Override
@@ -38,5 +48,35 @@ public class Virsune implements Comparable<Virsune>{
 	    else
 	    	return this.getVirsunePavadinimas().compareTo(v.getVirsunePavadinimas());
 	}
+
+	public List<Integer> getCord() {
+		return cord;
+	}
+
+	public void setCord(List<Integer> cord) {
+		this.cord = cord;
+	}
+	
+	public double paskaiciuotiAtstuma(Virsune v){
+		double atstumas = 0;
+		
+		for(int i = 0; i < v.getCord().size(); i++){
+			atstumas += Math.pow(v.getCord().get(i) - this.cord.get(i), this.cord.size());
+		}
+		
+		v.setAtstumas(Math.sqrt(atstumas));
+		return Math.sqrt(atstumas);
+	}	
+	
+	public double numanomasAts(Virsune v){
+		double atstumas = 0;
+		
+		for(int i = 0; i < v.getCord().size(); i++){
+			atstumas += Math.pow(v.getCord().get(i) - this.cord.get(i), this.cord.size());
+		}
+		return Math.sqrt(atstumas);
+	}	
+	
+	
 	
 }
