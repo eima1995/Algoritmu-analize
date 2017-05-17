@@ -41,18 +41,16 @@ public class Grafas {
         while (it.hasNext()) {
         	Map.Entry<Integer, List<Virsune>> pair = it.next();
             if(pair.getKey().equals(v1)){
-            	System.out.println("Virsune v1 " + v1);
+            	//System.out.println("Virsune v1 " + v1);
+            	//System.out.println(virs2);
             	pair.getValue().add(virs2);
             }
-            if(pair.equals(v2)){
-            	System.out.println("Virsune v2 " + v2);
-            	pair.getValue().add(virs2);
+            if(pair.getKey().equals(v2)){
+            	//System.out.println("Virsune v2 " + v2);
+            	pair.getValue().add(virs1);
             }
             //it.remove(); // avoids a ConcurrentModificationException
         }
-    	
-        System.out.println("Virsunes" + virsunes.containsKey(v2));
-
     }
     public Map<Integer, List<Virsune>> getVirsunes(){
     	return virsunes;

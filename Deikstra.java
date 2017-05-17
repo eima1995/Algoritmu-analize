@@ -15,7 +15,7 @@ public class Deikstra {
 		//jei vienas parametras irasytas vykdo tik ta nurodyta algoritma,
 		//jei du tai abu su generuotais duomenimimis nurodzius n ir m.
 		
-		//sugeneruotiGrafa();
+		sugeneruotiGrafa();
 		/*
 		if(args.length <= 2){
 			if(args.length == 0){
@@ -52,8 +52,8 @@ public class Deikstra {
 		}else{
 			throw new Exception("Klaidingai ivesti parametrai");
 		}
-			
-	*/
+			*/
+	
 		//Sukuriame virsunes su ju koordinatemis
 		/*
 		Virsune A = new Virsune('A', Arrays.asList(0,6)); 
@@ -79,7 +79,7 @@ public class Deikstra {
 		
         
 		g.pridetiBriauna(1, new LinkedList(Arrays.asList()));
-		g.pridetiBriauna(2, new LinkedList(Arrays.asList(v1,v2)));
+		g.pridetiBriauna(2, new LinkedList(Arrays.asList(v2)));
 		//System.out.println("Virsunes" + g.getVirsunes());
 		//g.pridetiBriauna(2,  Arrays.asList());
 		
@@ -324,20 +324,23 @@ public class Deikstra {
 		m = sc.nextInt();
 		
 		//sukuriame virsunes su koordinatemis
-		for(int i = 0; i < n; i++){
-			Virsune v = new Virsune(i, Arrays.asList(0,i));
+		for(int i = 1; i <= n; i++){
+			Virsune v = new Virsune(i, Arrays.asList(0,i - 1));
 			virsunes.add(v);
 		}
+		System.out.println("Prideta virsuniu: " + virsunes.size());
+	
+		for(int i = 1; i <= n; i++){	
+			g.pridetiBriauna(i, new LinkedList(Arrays.asList()));
+		}
 		
-		/*//sujungiame virsunes briaunomis
-		for(int i = 0; i < m; i++){	
-			int randomNum = ThreadLocalRandom.current().nextInt(min, max + 1);
-			g.pridetiBriauna(i, briaunos);
-		}*/
+		//System.out.println(g.getVirsunes());
 		
 		Random random1 = new Random();
 		Random random = new Random();
+		///System.out.println("Paimu is listo virsune" + virsunes.get(9));
         
+		System.out.println("Sugeneruotos virsunes:");
 		for (int j = 1; j <= (m / n); j++){
             for (int i = 1; i <= n; i++) {
             	int randNum = random1.nextInt((n - 1) + 1);
@@ -346,11 +349,13 @@ public class Deikstra {
             	}
                 System.out.println("(" + i + ", " + randNum + ")");
                // System.out.println(g.getVirsunes());
-                g.pridetiBriauna(i,  Arrays.asList(virsunes.get(randNum)));
-                g.pridetiBriauna(randNum, Arrays.asList(virsunes.get(i - 1)));
+                g.pridetiBriauna(randNum, i, virsunes.get(randNum - 1), virsunes.get(i - 1));
             }
-            System.out.println(g.getVirsunes());
+            
 		}
+		
+		System.out.println(g.getVirsunes());
+		System.out.println("AS CIA");
 		return g;
 	}
 	
