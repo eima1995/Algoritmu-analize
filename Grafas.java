@@ -2,17 +2,59 @@ import java.util.*;
 
 public class Grafas {
 
-    private final Map<Character, List<Virsune>> virsunes; //saugome visas virsunes su ju kaimynemis
+    private  Map<Integer, List<Virsune>> virsunes; //saugome visas virsunes su ju kaimynemis
 
     public Grafas() {
-        this.virsunes = new HashMap<Character, List<Virsune>>();
+        this.virsunes = new HashMap<Integer, List<Virsune>>();
     }
 
-    public void pridetiBriauna(Character pav, List<Virsune> briaunos) {
+    public void pridetiBriauna(Integer pav, List<Virsune> briaunos) {
         this.virsunes.put(pav, briaunos);
     }
+/*    
+    public void pridetiBriauna(Integer v1, Integer v2, ArrayList<Virsune> v){
+    	//randu ta virsune ir pridedu briauna
+    	Iterator<Map.Entry<Integer, List<Virsune>>> it = this.virsunes.entrySet().iterator();
+        while (it.hasNext()) {
+        	Map.Entry<Integer, List<Virsune>> pair = it.next();
+            if(pair.getKey().equals(v1)){
+            	System.out.println("Virsune v1 " + v1);
+            	List<Virsune> virsunes = pair.getValue();
+            	
+            }
+            if(pair.equals(v2)){
+            	System.out.println("Virsune v2 " + v2);
+            	List<Virsune> virsunes = pair.getValue();
+            	virsunes.add(v.get(v2));
+            }
+            it.remove(); // avoids a ConcurrentModificationException
+        }
+    	
+        System.out.println("Virsunes" + virsunes.containsKey(v2));
+
+    }
+  */  
     
-    public Map<Character, List<Virsune>> getVirsunes(){
+    public void pridetiBriauna(Integer v1, Integer v2, Virsune virs1, Virsune virs2){
+    	//randu ta virsune ir pridedu briauna
+    	Iterator<Map.Entry<Integer, List<Virsune>>> it = this.virsunes.entrySet().iterator();
+        while (it.hasNext()) {
+        	Map.Entry<Integer, List<Virsune>> pair = it.next();
+            if(pair.getKey().equals(v1)){
+            	System.out.println("Virsune v1 " + v1);
+            	pair.getValue().add(virs2);
+            }
+            if(pair.equals(v2)){
+            	System.out.println("Virsune v2 " + v2);
+            	pair.getValue().add(virs2);
+            }
+            //it.remove(); // avoids a ConcurrentModificationException
+        }
+    	
+        System.out.println("Virsunes" + virsunes.containsKey(v2));
+
+    }
+    public Map<Integer, List<Virsune>> getVirsunes(){
     	return virsunes;
     }
 }

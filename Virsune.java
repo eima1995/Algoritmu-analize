@@ -1,7 +1,7 @@
 import java.util.*;
 public class Virsune implements Comparable<Virsune>{
 	
-	private Character virsunesPavadinimas;
+	private Integer virsunesPavadinimas;
 	private List<Integer> cord = new ArrayList<Integer>();
     private double atstumas; 
     
@@ -9,21 +9,21 @@ public class Virsune implements Comparable<Virsune>{
     	
     }
     
-    Virsune(Character virsunesPavadinimas, List<Integer> cord){
+    Virsune(Integer virsunesPavadinimas, List<Integer> cord){
     	this.setCord(cord);
     	this.virsunesPavadinimas = virsunesPavadinimas;
     }
     
-    Virsune(Character virsunesPavadinimas, double atstumas){
+    Virsune(Integer virsunesPavadinimas, double atstumas){
     	this.virsunesPavadinimas = virsunesPavadinimas;
     	this.atstumas = atstumas;
     }
     
-	public Character getVirsunePavadinimas() {
+	public Integer getVirsunePavadinimas() {
 		return virsunesPavadinimas;
 	}
 	
-	public void setVirsunePavadinimas(Character virsunePavadinimas) {
+	public void setVirsunePavadinimas(Integer virsunePavadinimas) {
 		this.virsunesPavadinimas = virsunePavadinimas;
 	}
 	
@@ -76,7 +76,4 @@ public class Virsune implements Comparable<Virsune>{
 		}
 		return Math.sqrt(atstumas);
 	}	
-	
-	
-	
 }
