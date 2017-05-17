@@ -25,14 +25,25 @@ public class Deikstra {
 				Deikstra d = new Deikstra(sugeneruotiGrafa()); 
 				 int pradzia = 1;
 				 System.out.println("Deikstros algoritmo rezultatai:");
-			     time = System.currentTimeMillis();					
-				 System.out.println("Kelias " + d.gautiTrumpiausiaKelia(pradzia, pabaiga));
+					
+				 int temp;
+				 temp = pabaiga;
+				 time = System.currentTimeMillis();	
+				 while(pabaiga != 1){
+					 System.out.println("Kelias " + d.gautiTrumpiausiaKelia(pradzia, pabaiga));
+					 pabaiga --;
+				 }
 				 System.out.println("Vykdymo laikas " + (System.currentTimeMillis() - time) + " ms");
+			    
 				 System.out.println("-----------------------------------------------------------------------------");
+				 pabaiga = temp;
 				 time = System.currentTimeMillis();
-				 System.out.println("Sedwick-Vitter algoritmo rezultatai:");
-				 System.out.println("Kelias " + d.gautiTrumpiausiaKelia2(pradzia, pabaiga));
-				    System.out.println("Vykdymo laikas " + (System.currentTimeMillis() - time) + " ms");
+				 System.out.println("Sedgewick-Vitter algoritmo rezultatai:");
+				 while(pabaiga != 1){
+					 System.out.println("Kelias " + d.gautiTrumpiausiaKelia2(pradzia, pabaiga));
+					 pabaiga --;
+				 }
+				 System.out.println("Vykdymo laikas " + (System.currentTimeMillis() - time) + " ms");
 			}else if(args.length == 1){
 				if(args[0].equals("1")){
 					Deikstra d = new Deikstra(skaitytiIsFailo());
@@ -151,7 +162,8 @@ public class Deikstra {
             	}
             }
         }
-        throw new Exception("Neimano pasiekti virsunes" + pabaiga); 
+        //throw new Exception("Neimano pasiekti virsunes" + pabaiga); 
+        return null;
     }
 	
 	public boolean arAplankyta(Integer virsunePav, List<Integer> aplankytos){
@@ -271,7 +283,8 @@ public class Deikstra {
                     }
             }
         }
-        throw new Exception("Neimanoma pasiekti virsunes" + pabaiga); 
+        //throw new Exception("Neimanoma pasiekti virsunes" + pabaiga); 
+        return null;
     }
 	
 	public double getAtstumasXY() {
@@ -335,25 +348,27 @@ public class Deikstra {
 		BufferedReader br = new BufferedReader(new FileReader("failas.txt"));
 		StringBuilder sb = new StringBuilder();
 		String dabEilute = br.readLine();
+	    dabEilute = br.readLine();
 		String temp = "";
 		int n = 0; //virsuniu sk
 		while (dabEilute != null) {
 			ArrayList<Integer> cord = new ArrayList<Integer>();
 			n++;    /// tai kelinta virsune jos numeris
 			//System.out.println(dabEilute);
+			
 			if(dabEilute.startsWith(("BRIAUNOS"))){
+				System.out.println("BRIAUNOS: ");
 				for(Virsune v : virsunes){
 					ArrayList<Virsune> virs = new ArrayList<Virsune>();
 					//System.out.println("Idetos grafe virsunes" + g.getVirsunes());
 					dabEilute = br.readLine();
 			    	while (dabEilute != null){
-			    		
 			    		String [] duom =  dabEilute.split(",");
 			    		int[] ints = new int[duom.length];
 			    		for(int i=0; i< duom.length; i++){
-			    			ints[i] = Integer.parseInt(duom[i]);   
-			    			System.out.println("PARSINASI" + ints[i]);
+			    			ints[i] = Integer.parseInt(duom[i]); 
 			    		}
+			    		System.out.println(ints[0]  + " " + ints[1]);
 			    		g.pridetiBriauna(ints[0], ints[1] , virsunes.get(ints[0] - 1), virsunes.get(ints[1] - 1));
 			    		dabEilute = br.readLine();
 				    }
