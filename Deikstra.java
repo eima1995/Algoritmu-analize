@@ -23,41 +23,50 @@ public class Deikstra {
 			if(args.length == 0){
 				//vykdome abu algortimus sugeneruotais duomenimis
 				Deikstra d = new Deikstra(sugeneruotiGrafa()); 
-				
-				int pradzia = 1;
-				System.out.println("Deikstros algoritmo rezultatai:");
-			    time = System.currentTimeMillis();					
-				System.out.println("Kelias " + d.gautiTrumpiausiaKelia(pradzia, pabaiga));
-				System.out.println("Vykdymo laikas " + (System.currentTimeMillis() - time) + " ms");
-				
+				 int pradzia = 1;
+				 System.out.println("Deikstros algoritmo rezultatai:");
+			     time = System.currentTimeMillis();					
+				 System.out.println("Kelias " + d.gautiTrumpiausiaKelia(pradzia, pabaiga));
+				 System.out.println("Vykdymo laikas " + (System.currentTimeMillis() - time) + " ms");
+				 System.out.println("-----------------------------------------------------------------------------");
 				 time = System.currentTimeMillis();
 				 System.out.println("Sedwick-Vitter algoritmo rezultatai:");
 				 System.out.println("Kelias " + d.gautiTrumpiausiaKelia2(pradzia, pabaiga));
 				    System.out.println("Vykdymo laikas " + (System.currentTimeMillis() - time) + " ms");
 			}else if(args.length == 1){
-				if(args[0].equals(1)){
-					//vykdome Dieikstra algoritma 
-				}else if(args[1].equals(2)){
-					//vykdome Sedgewick-Vitter algoritma
+				if(args[0].equals("1")){
+					Deikstra d = new Deikstra(skaitytiIsFailo());
+					ivedimasXY();
+					System.out.println("Deikstros algoritmo rezultatai:");
+				    time = System.currentTimeMillis();					
+					System.out.println("Kelias " + d.gautiTrumpiausiaKelia(pradzia, pabaiga));
+					System.out.println("Vykdymo laikas " + (System.currentTimeMillis() - time) + " ms");
+				}else if(args[0].equals("2")){
+					Deikstra d = new Deikstra(skaitytiIsFailo());
+					ivedimasXY();
+					System.out.println("Sedgewick algoritmo rezultatai:");
+				    time = System.currentTimeMillis();					
+					System.out.println("Kelias " + d.gautiTrumpiausiaKelia2(pradzia, pabaiga));
+					System.out.println("Vykdymo laikas " + (System.currentTimeMillis() - time) + " ms");
 				}else{
 					throw new Exception("Klaidingai ivesti parametrai");
 				}
 			}else{
 				if((args[0].equals("1")) && (args[1].equals("2"))){
+					//abu algoritmai vykdomi su nuskaitytais duomeniimas
 					Deikstra d = new Deikstra(skaitytiIsFailo()); 
-				    System.out.println("Iveskite x:" );
-					Scanner sc = new Scanner(System.in);
-					Integer pradzia = sc.nextInt();
+					ivedimasXY();
 					
-					System.out.println("Iveskite y:" );
-					Integer pabaiga = sc.nextInt();
-					
-					time = System.currentTimeMillis();
-				    System.out.println("Kelias " + d.gautiTrumpiausiaKelia(pradzia, pabaiga) + " atstumas " + d.atstumasXY);
+					System.out.println("Deikstros algoritmo rezultatai:");
+				    time = System.currentTimeMillis();					
+					System.out.println("Kelias " + d.gautiTrumpiausiaKelia(pradzia, pabaiga));
+					System.out.println("Vykdymo laikas " + (System.currentTimeMillis() - time) + " ms");
+					System.out.println("-----------------------------------------------------------------------------");
+					System.out.println("Sedgewick algoritmo rezultatai:");
+				    time = System.currentTimeMillis();					
+					System.out.println("Kelias " + d.gautiTrumpiausiaKelia2(pradzia, pabaiga));
+					System.out.println("Vykdymo laikas " + (System.currentTimeMillis() - time) + " ms");
 				    
-				    System.out.println("Vykdymo laikas " + (System.currentTimeMillis() - time) + " ms");
-				    
-				    sc.close();
 				}else{
 					throw new Exception("Klaidingai ivesti parametrai");
 				}
@@ -65,40 +74,6 @@ public class Deikstra {
 		}else{
 			throw new Exception("Klaidingai ivesti parametrai");
 		}
-			
-	
-		//Sukuriame virsunes su ju koordinatemis
-		/*
-		Virsune A = new Virsune('A', Arrays.asList(0,6)); 
-		Virsune B = new Virsune('B', Arrays.asList(3,6));
-		Virsune C = new Virsune('C', Arrays.asList(1,4));
-		Virsune D = new Virsune('D', Arrays.asList(7,9));
-		Virsune E = new Virsune('E', Arrays.asList(7,4));
-		*/
-		//Sukuriame briaunas
-		/*
-		g.pridetiBriauna('A', Arrays.asList(C,B));
-		g.pridetiBriauna('B', Arrays.asList(A,D));
-		g.pridetiBriauna('C', Arrays.asList(A,E));
-		g.pridetiBriauna('D', Arrays.asList(E,B));
-		g.pridetiBriauna('E', Arrays.asList(C,D));
-   		*/
-		
-		Deikstra d = new Deikstra(g);
-		
-		System.out.println("Iveskite x:" );
-		Scanner sc = new Scanner(System.in);
-		Integer pradzia = sc.nextInt();
-		
-		System.out.println("Iveskite y:" );
-		Integer pabaiga = sc.nextInt();
-	    
-		time = System.currentTimeMillis();
-	    System.out.println("Kelias " + d.gautiTrumpiausiaKelia(pradzia, pabaiga) + " atstumas " + d.atstumasXY);
-	    
-	    System.out.println("Vykdymo laikas " + (System.currentTimeMillis() - time) + " ms");
-	    
-	    sc.close();
 	}
 	
 	Deikstra(Grafas grafas){
@@ -354,7 +329,7 @@ public class Deikstra {
 		return g;
 	}
 	
-	public static Grafas skaitytiIsFailo() throws FileNotFoundException, IOException{
+	public static Grafas skaitytiIsFailo() throws Exception{
 		Grafas g = new Grafas();
 		ArrayList<Virsune> virsunes = new ArrayList<Virsune>();
 		BufferedReader br = new BufferedReader(new FileReader("failas.txt"));
@@ -364,25 +339,27 @@ public class Deikstra {
 		int n = 0; //virsuniu sk
 		while (dabEilute != null) {
 			ArrayList<Integer> cord = new ArrayList<Integer>();
-			n++;
+			n++;    /// tai kelinta virsune jos numeris
 			//System.out.println(dabEilute);
 			if(dabEilute.startsWith(("BRIAUNOS"))){
 				for(Virsune v : virsunes){
 					ArrayList<Virsune> virs = new ArrayList<Virsune>();
 					//System.out.println("Idetos grafe virsunes" + g.getVirsunes());
-			    	while ((dabEilute = br.readLine()) != null){
-			    		String [] duom =  dabEilute.split("|");
-			    		//System.out.println("Parsinimas" + Integer.parseInt(duom[0]));
-			    		//System.out.println(virsunes.size());
-			    		/*
-			    		g.pridetiBriauna(Integer.parseInt(duom[0]), Integer.parseInt(duom[1]), virsunes);
-			    		g.pridetiBriauna(Integer.parseInt(duom[1]), Integer.parseInt(duom[0]), virsunes);
-			    		*/
+					dabEilute = br.readLine();
+			    	while (dabEilute != null){
+			    		
+			    		String [] duom =  dabEilute.split(",");
+			    		int[] ints = new int[duom.length];
+			    		for(int i=0; i< duom.length; i++){
+			    			ints[i] = Integer.parseInt(duom[i]);   
+			    			System.out.println("PARSINASI" + ints[i]);
+			    		}
+			    		g.pridetiBriauna(ints[0], ints[1] , virsunes.get(ints[0] - 1), virsunes.get(ints[1] - 1));
+			    		dabEilute = br.readLine();
 				    }
 				}
 			
 		    }else{
-		    	sb.append(dabEilute);
 				String [] duom =  dabEilute.split(",");
 				
 				for(int i = 0; i < duom.length; i++){
@@ -392,11 +369,22 @@ public class Deikstra {
 				System.out.println("Virsune " +v.getVirsunePavadinimas() + " " + v.getCord());
 				//sukuriame virsune
 				
+				g.pridetiBriauna(n, new LinkedList(Arrays.asList()));				
 				virsunes.add(v);
 			    dabEilute = br.readLine();
 		    }
 		 }
 		    return g;
+		
+	}
+	public static void ivedimasXY(){
+		System.out.println("Iveskite x:" );
+		Scanner sc = new Scanner(System.in);
+		pradzia = sc.nextInt();
+		
+		System.out.println("Iveskite y:" );
+		pabaiga = sc.nextInt();
+		sc.close();
 		
 	}
 }
