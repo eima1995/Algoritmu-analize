@@ -4,7 +4,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.*;
 
-public class Deikstra {
+public class Main {
 	private Grafas grafas;
 	private double atstumasXY;
 	static int pradzia;
@@ -22,7 +22,7 @@ public class Deikstra {
 		if(args.length <= 2){
 			if(args.length == 0){
 				//vykdome abu algortimus sugeneruotais duomenimis
-				Deikstra d = new Deikstra(sugeneruotiGrafa()); 
+				 Main d = new Main(sugeneruotiGrafa()); 
 				 int pradzia = 1;
 				 System.out.println("Deikstros algoritmo rezultatai:");
 					
@@ -46,14 +46,14 @@ public class Deikstra {
 				 System.out.println("Vykdymo laikas " + (System.currentTimeMillis() - time) + " ms");
 			}else if(args.length == 1){
 				if(args[0].equals("1")){
-					Deikstra d = new Deikstra(skaitytiIsFailo());
+					Main d = new Main(skaitytiIsFailo());
 					ivedimasXY();
 					System.out.println("Deikstros algoritmo rezultatai:");
 				    time = System.currentTimeMillis();					
 					System.out.println("Kelias " + d.gautiTrumpiausiaKelia(pradzia, pabaiga));
 					System.out.println("Vykdymo laikas " + (System.currentTimeMillis() - time) + " ms");
 				}else if(args[0].equals("2")){
-					Deikstra d = new Deikstra(skaitytiIsFailo());
+					Main d = new Main(skaitytiIsFailo());
 					ivedimasXY();
 					System.out.println("Sedgewick algoritmo rezultatai:");
 				    time = System.currentTimeMillis();					
@@ -65,7 +65,7 @@ public class Deikstra {
 			}else{
 				if((args[0].equals("1")) && (args[1].equals("2"))){
 					//abu algoritmai vykdomi su nuskaitytais duomeniimas
-					Deikstra d = new Deikstra(skaitytiIsFailo()); 
+					Main d = new Main(skaitytiIsFailo()); 
 					ivedimasXY();
 					
 					System.out.println("Deikstros algoritmo rezultatai:");
@@ -87,7 +87,7 @@ public class Deikstra {
 		}
 	}
 	
-	Deikstra(Grafas grafas){
+	Main(Grafas grafas){
 		this.grafas = grafas;
 		
 	}
